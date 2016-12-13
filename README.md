@@ -59,5 +59,5 @@ $ docker-compose down
 To cleanup any dangling volumes docker has left, issue this commnad:
 
 ```
-docker volume rm (docker volume ls -qf dangling=true)
+$ docker volume rm (docker volume ls -qf dangling=true)
 ```
