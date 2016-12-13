@@ -1,0 +1,62 @@
+version: '2'
+
+services:
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:4.7-php7.0-fpm
+    # build: ./docker-compose/custom-wp
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+      - ./docker-compose/wp-dev:/var/www/html/wp-dev
+      - ./docker-compose/wp-dev/apache2-hack--wp-dev-inject.sh:/usr/local/bin/apache2-hack--wp-dev-inject.sh
+    command: ["apache2-hack--wp-dev-inject.sh"]
+    links:
+      - db
+    restart: always
+    environment:
+      MYSQL_PORT_3306_TCP: "tcp://db:3306"
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress                                             # essentially copy the db parameters
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      # WORDPRESS_TABLE_PREFIX: ""                                             # only set if you need to override the default one - "wp_"
+      # === wp-dev ===
+      # WP_HOME: "http://localhost:8080"
+      # WP_SITEURL: ""                                                         # defaults to WP_HOME
+      # WP_HOME_REPLACE_FROM: "http://www.domain.com"                          # replace _this string_ in the rendered output with WP_HOME (no trailing slash)
+      # DISABLE_WP_CRON: 1                                                     # defaults to 0 (false)
+      # WP_CORE_DIR: "/var/www/html"                                           # path to WordPress
+      # === fetch ===
+      # FETCH_ENABLED: 1
+      # FETCH_REMOTE_SERVER_UPLOADS_URL: "http://domain.com.au/wp-content/uploads/"
+      # FETCH_FOR_ADMINS_ONLY: 0
+      # FETCH_LIMIT_RESPONSE_SIZE: 20971520                                    # 20 mega bytes
+      # FETCH_LIMIT_RESPONSE_TIME: 60                                          # 60 seconds
+
+  db:
+    image: mariadb:10.1
+    volumes:
+      - ./var/db:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  nginx:
+    depends_on:
+      - wordpress
+    image: nginx:1.11
+    volumes_from:
+      - wordpress
+    volumes:
+      - ./docker-compose/nginx/conf.d:/etc/nginx/conf.d
+    links:
+      - wordpress
+    ports:
+      - "8080:80"
+    restart: always
+
