@@ -17,7 +17,7 @@ $ cd test
 $ mkdir wp-content
 $ git clone git://.../my-theme wp-content/themes/my-theme
 
-$ git clone https://.../docker-compose-conf-wp-dev docker-compose
+$ git clone https://github.com/avioli/docker-compose-wp-dev.git docker-compose
 $ cp ./docker-compose/docker-compose.yaml .
 $ # edit docker-compose.yaml to your desire
 
