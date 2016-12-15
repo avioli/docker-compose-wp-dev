@@ -4,12 +4,14 @@
 
 set -eu
 
-if [ -e /var/www/html/wp-config.php ]; then
-  if [ ! -e /var/www/html/wp-config.bak ]; then
-    cp /var/www/html/wp-config.php /var/www/html/wp-config.bak
+[ -z "$WP_CORE_DIR" ] && WP_CORE_DIR=/var/www/html
+
+if [ -e "$WP_CORE_DIR/wp-config.php" ]; then
+  if [ ! -e "$WP_CORE_DIR/wp-config.bak" ]; then
+    cp "$WP_CORE_DIR/wp-config.php" "$WP_CORE_DIR/wp-config.bak"
   fi
 
-  echo "<?php @include_once('wp-dev/wp-dev.php'); ?>" | cat - /var/www/html/wp-config.bak > /var/www/html/wp-config.php
+  echo "<?php @include_once('wp-dev/wp-dev.php'); ?>" | cat - "$WP_CORE_DIR/wp-config.bak" > "$WP_CORE_DIR/wp-config.php"
   echo "Injected wp-dev into wp-config.php"
 else
   echo "NO wp-config.php FOUND!"
