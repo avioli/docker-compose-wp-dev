@@ -1,8 +1,19 @@
 version: '2'
 
 services:
+  aws-theme:
+    build: ./docker-compose/aws-theme
+    volumes:
+      - ~/.ssh:/root/.ssh
+      - .:/project
+    environment:
+      REPO: "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/wp-theme-..." # add theme name or use below
+      # REPO_NAME: wp-theme-...
+      # AWS_DEFAULT_REGION: us-east-1
+
   wordpress:
     depends_on:
+      - aws-theme
       - db
     image: wordpress:4.7-php7.0-fpm
     # build: ./docker-compose/custom-wp
