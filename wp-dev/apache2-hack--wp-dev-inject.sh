@@ -2,7 +2,7 @@
 
 ### ATTENTION!!! This file has to start with `apache2` :) -- It is a hack.
 
-set -eu
+set -e
 
 [ -z "$WP_CORE_DIR" ] && WP_CORE_DIR=/var/www/html
 
