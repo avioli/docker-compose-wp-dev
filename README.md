@@ -52,7 +52,7 @@ timeout, but the db container will import it eventually. When it finishes,
 
   * `wp-content` - the default WordPress plugins and themes will be available
     - plus your theme and any extra plugins, if you've used the `aws-theme` container + `composer.json`
-  * `var` - holds your mariaDB files (destroy the db container via `docker-compose down <name_of_dir>_db_1` and remove the dir to re-create upon next launch)
+  * `var` - holds your mariaDB files (destroy the db container via `docker-compose down <name_of_dir>_db_1` and remove the `var` dir to re-create upon next launch)
   * `vendor` - only if you've used `composer.json` and the `aws-theme` container
 
 ## Shut down
