@@ -1,5 +1,27 @@
 version: '2'
 
+# CONFIGURATION NOTES:
+# 
+#  * aws-theme: If you have your theme in a repo, then you can use the
+#               `aws-theme` container to clone it automatically via the REPO or
+#               REPO_NAME variables.
+#
+#  * wordpress: Comment or remove the `aws-theme` dependency, if you are not
+#               going to use the above container.
+#
+#               If you edit your `/etc/hosts` file and want to run multiple
+#               websites at once, then edit WP_HOME variable to point to the
+#               desired domain name from your hosts file.
+#
+#  * db: If you want to use different credentials, then make sure to update
+#        the ones in the `wordpress` container as well.
+#
+#  * nginx: In case you run multiple websites at once, but you leave them at
+#           `localhost`, then you have to have a different port for each of
+#           them.
+#           
+#           If you have multiple configurations with different ports, then you
+#           will have to expose them under `ports`.
 services:
   aws-theme:
     build: ./docker-compose/aws-theme
