@@ -46,7 +46,7 @@ services:
     command: ["apache2-hack--wp-dev-inject.sh"]
     links:
       - db
-    restart: always
+    # restart: always
     environment:
       MYSQL_PORT_3306_TCP: "tcp://db:3306"
       WORDPRESS_DB_HOST: db:3306
@@ -72,7 +72,7 @@ services:
     volumes:
       - ./var/db:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d
-    restart: always
+    # restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: wordpress
@@ -91,5 +91,5 @@ services:
       - wordpress
     ports:
       - "8080:80"
-    restart: always
+    # restart: always
 
