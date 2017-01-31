@@ -37,7 +37,7 @@ services:
     depends_on:
       - aws-theme
       - db
-    image: wordpress:4.7-php7.0-fpm
+    image: wordpress:4.7-php7.0-fpm-alpine
     # build: ./docker-compose/custom-wp
     volumes:
       - ./wp-content:/var/www/html/wp-content
