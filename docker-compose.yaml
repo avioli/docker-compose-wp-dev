@@ -6,8 +6,8 @@ version: '2'
 #               `aws-theme` container to clone it automatically via the REPO or
 #               REPO_NAME variables.
 #
-#  * wordpress: Comment or remove the `aws-theme` dependency, if you are not
-#               going to use the above container.
+#  * wordpress: Comment or remove the `aws-theme` dependency, plus the ./vendor
+#               volume, if you are not going to use the above container.
 #
 #               If you edit your `/etc/hosts` file and want to run multiple
 #               websites at once, then edit WP_HOME variable to point to the
@@ -43,6 +43,7 @@ services:
       - ./wp-content:/var/www/html/wp-content
       - ./docker-compose/wp-dev:/var/www/html/wp-dev
       - ./docker-compose/wp-dev/apache2-hack--wp-dev-inject.sh:/usr/local/bin/apache2-hack--wp-dev-inject.sh
+      - ./vendor:/var/www/html/vendor
     command: ["apache2-hack--wp-dev-inject.sh"]
     links:
       - db

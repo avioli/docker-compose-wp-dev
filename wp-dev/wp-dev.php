@@ -11,6 +11,10 @@
  *     - Initial version
  */ 
 
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+}
+
 function __define($name, $value) {
 	if (! defined($name)) {
 		define($name, $value);
