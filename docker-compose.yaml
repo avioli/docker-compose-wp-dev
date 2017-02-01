@@ -83,7 +83,7 @@ services:
   nginx:
     depends_on:
       - wordpress
-    image: nginx:1.11
+    image: nginx:1.11-alpine
     volumes_from:
       - wordpress
     volumes:
