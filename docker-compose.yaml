@@ -42,6 +42,7 @@ services:
     volumes:
       - ./wp-content:/var/www/html/wp-content
       - ./docker-compose/wp-dev:/var/www/html/wp-dev
+      - ./docker-compose/wp-dev/php.uploads.ini:/usr/local/etc/php/conf.d/php.uploads.ini
       - ./docker-compose/wp-dev/apache2-hack--wp-dev-inject.sh:/usr/local/bin/apache2-hack--wp-dev-inject.sh
       - ./vendor:/var/www/html/vendor
     command: ["apache2-hack--wp-dev-inject.sh"]

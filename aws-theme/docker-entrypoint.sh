@@ -19,7 +19,7 @@ fi
 
 if [ ! -d "/project/wp-content/themes/$THEME_DIRNAME" ]; then
 	git clone "$REPO" "/project/wp-content/themes/$THEME_DIRNAME" \
-	&& ln -s "wp-content/themes/$THEME_DIRNAME/composer.json" /project/composer.json
+	&& ln -sf "wp-content/themes/$THEME_DIRNAME/composer.json" /project/composer.json
 fi
 
 exec "$@"
