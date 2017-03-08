@@ -2,7 +2,7 @@
 /**
  * A helper script for missing local media files.
  *
- * Version 2.0.0
+ * Version 2.0.1
  *
  * If you have a live/staging instance of a WordPress website and want to work
  * locally, after you get the source files and database, you might be missing
@@ -45,6 +45,19 @@ RewriteRule wp-content/uploads/(.*)$ /fetch.php?_request=$1 [QSA,NC,L]
 		try_files $uri /fetch.php?_request=$1;
 	}
 
+	location ~ /fetch\.php$ {
+        include fastcgi_params;
+        fastcgi_intercept_errors on;
+        fastcgi_read_timeout 600;
+        fastcgi_pass php; # adjust
+        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+
+        fastcgi_param FETCH_ENABLED 1;
+        fastcgi_param FETCH_REMOTE_SERVER_UPLOADS_URL "http://your-domain.com.au/wp-content/uploads/";
+        fastcgi_param FETCH_FOR_ADMINS_ONLY 1;
+        #fastcgi_param WP_CORE_DIR /mnt/data/var/vhosts/your-domain-path;
+    }
+
  *
  * CONFIGURE
  *
@@ -83,7 +96,7 @@ define( 'FETCH_LIMIT_RESPONSE_SIZE', getenv('FETCH_LIMIT_RESPONSE_SIZE') === Fal
 define( 'FETCH_LIMIT_RESPONSE_TIME', getenv('FETCH_LIMIT_RESPONSE_TIME') === False ? 60 : intval(getenv('FETCH_LIMIT_RESPONSE_TIME'), 10) );
 // define( 'LEAVE_FILE_MISMATCH', True ); # DEBUG only !!!
 
-define( 'WP_CORE_DIR', getenv('WP_CORE_DIR') ? rtrim(getenv('WP_CORE_DIR'), '/\\') : dirname(__DIR__) );
+define( 'WP_CORE_DIR', getenv('WP_CORE_DIR') ? rtrim(getenv('WP_CORE_DIR'), '/\\') : null );
 
 /**
  * NOTES:
@@ -146,7 +159,14 @@ if (empty($_REQUEST['_request'])) {
 }
 
 define('WP_USE_THEMES', false);
-@include(WP_CORE_DIR . '/wp-blog-header.php');
+if (WP_CORE_DIR !== null) {
+	@include(WP_CORE_DIR . '/wp-blog-header.php');
+} else {
+	@include(__DIR__ . '/wp-blog-header.php');
+	if (! function_exists('current_user_can')) {
+		@include(dirname(__DIR__) . '/wp-blog-header.php');
+	}
+}
 
 // This checks if the include above worked, not only if the function exists :)
 if (! function_exists('current_user_can')) {
