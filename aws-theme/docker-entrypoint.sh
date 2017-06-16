@@ -20,6 +20,8 @@ fi
 if [ ! -d "/project/wp-content/themes/$THEME_DIRNAME" ]; then
 	git clone "$REPO" "/project/wp-content/themes/$THEME_DIRNAME" \
 	&& ln -sf "wp-content/themes/$THEME_DIRNAME/composer.json" /project/composer.json
+else
+    echo "found theme at: /project/wp-content/themes/$THEME_DIRNAME"
 fi
 
 exec "$@"
