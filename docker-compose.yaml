@@ -37,7 +37,7 @@ services:
     depends_on:
       - aws-theme
       - db
-    image: wordpress:4.7-php7.0-fpm-alpine
+    image: wordpress:4.8-php7.0-fpm-alpine
     # build: ./docker-compose/custom-wp
     volumes:
       - ./wp-content:/var/www/html/wp-content
@@ -70,7 +70,7 @@ services:
       # FETCH_LIMIT_RESPONSE_TIME: 60                                          # 60 seconds
 
   db:
-    image: mariadb:10.1
+    image: mariadb:10.3
     volumes:
       - ./var/db:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d
@@ -84,7 +84,7 @@ services:
   nginx:
     depends_on:
       - wordpress
-    image: nginx:1.12-alpine
+    image: nginx:1.13-alpine
     volumes_from:
       - wordpress
     volumes:
