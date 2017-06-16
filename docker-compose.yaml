@@ -27,11 +27,14 @@ services:
     build: ./docker-compose/aws-theme
     volumes:
       - ~/.ssh:/root/.ssh
+      - ~/.aws:/root/.aws
       - .:/project
     environment:
-      REPO: "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/wp-theme-..." # add theme name or use below
-      # REPO_NAME: wp-theme-...
-      # AWS_DEFAULT_REGION: us-east-1
+      # REPO: "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/wp-theme-" # add theme name or use below
+      REPO_NAME: wp-theme-
+      AWS_DEFAULT_REGION: us-east-1
+      # AWS_DEFAULT_PROFILE: xxyyzz
+      # THEME_DIRNAME: theme
 
   wordpress:
     depends_on:
@@ -55,7 +58,7 @@ services:
       WORDPRESS_DB_NAME: wordpress                                             # essentially copy the db parameters
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
-      # WORDPRESS_TABLE_PREFIX: ""                                             # only set if you need to override the default one - "wp_"
+      # WORDPRESS_TABLE_PREFIX: "wp_"                                          # only set if you need to override the default one - "wp_"
       # === wp-dev ===
       # WP_HOME: "http://localhost:8080"
       # WP_SITEURL: ""                                                         # defaults to WP_HOME
