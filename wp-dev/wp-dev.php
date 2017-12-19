@@ -39,6 +39,10 @@ __define('AUTOSAVE_INTERVAL', 160);
 __define('WP_POST_REVISIONS', 3); // or a number
 // __define('EMPTY_TRASH_DAYS', 0);
 
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    __define('FORCE_SSL_ADMIN', true);
+}
+
 __define('ABSPATH', WP_CORE_DIR . DIRECTORY_SEPARATOR); // NOTE: ABSPATH is usually already defined (in wp-load.php)
 
 // NOTE: Use WP_HOME_REPLACE_FROM variable to replace a _given string_ with WP_HOME in the rendered output
