@@ -1,4 +1,4 @@
-FROM composer:1.4
+FROM composer:1.6
 
 MAINTAINER Evo Stamatov "evo@ionata.com.au"
 
