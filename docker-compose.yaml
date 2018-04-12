@@ -40,7 +40,7 @@ services:
     depends_on:
       - aws-theme
       - db
-    image: wordpress:4.8-php7.0-fpm-alpine
+    image: wordpress:4.9-php7.0-fpm-alpine
     # build: ./docker-compose/custom-wp
     volumes:
       - ./wp-content:/var/www/html/wp-content
