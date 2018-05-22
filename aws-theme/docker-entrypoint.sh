@@ -10,18 +10,35 @@ elif [ -z "$REPO"]; then
 	REPO="ssh://git-codecommit.$AWS_DEFAULT_REGION.amazonaws.com/v1/repos/$REPO_NAME"
 fi
 
-if [ -z "$REPO_NAME" ]; then
-	>&2 echo "Bad REPO_NAME: '$REPO_NAME'"
+if [ -z "$REPO_NAME" -a -z "$THEME_DIRNAME" ]; then
+	>&2 echo "No REPO_NAME or THEME_DIRNAME"
 	exit 1
 fi
 
 [ -z "$THEME_DIRNAME" ] && THEME_DIRNAME="$REPO_NAME"
 
-if [ ! -d "/project/wp-content/themes/$THEME_DIRNAME" ]; then
-	git clone "$REPO" "/project/wp-content/themes/$THEME_DIRNAME" \
-	&& ln -sf "wp-content/themes/$THEME_DIRNAME/composer.json" /project/composer.json
+PROJECT_ROOT=/project
+OUTPATH=$PROJECT_ROOT
+
+if [ -n "$BASE_PATH" ]; then
+    OUTPATH="$OUTPATH/$BASE_PATH/$THEME_DIRNAME"
 else
-    echo "found theme at: /project/wp-content/themes/$THEME_DIRNAME"
+    OUTPATH="$OUTPATH/$THEME_DIRNAME"
+fi
+
+if [ ! -d "$OUTPATH" -o ! -d "$OUTPATH/.git" ]; then
+    ARGS=
+
+    [ "$RECURSIVE" != "0" ] && ARGS="--recursive"
+
+	git clone $ARGS "$REPO" "$OUTPATH"
+fi
+
+if [ -z "$CWD" ]; then
+    COMPOSER_FILE="$OUTPATH/composer.json"
+    test -f "$COMPOSER_FILE" && ln -sf "$COMPOSER_FILE" $PROJECT_ROOT/composer.json
+else
+    cd "$OUTPATH"
 fi
 
 exec "$@"
