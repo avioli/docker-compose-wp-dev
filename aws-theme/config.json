@@ -1,8 +1,0 @@
-{
-  "config": {
-    "secure-http": false
-  },
-  "repositories": {
-    "aws": { "type": "git", "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/composer-aws" }
-  }
-}

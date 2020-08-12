@@ -6,6 +6,10 @@ version: '2'
 #               `aws-theme` container to clone it automatically via the REPO or
 #               REPO_NAME variables.
 #
+#               If you don't want to use Ionata's composer (probably) - comment
+#               out the USE_IONATA_COMPOSER line and maybe the `~/.aws` volume
+#               share.
+#
 #  * wordpress: Comment or remove the `aws-theme` dependency, plus the ./vendor
 #               volume, if you are not going to use the above container.
 #
@@ -19,7 +23,7 @@ version: '2'
 #  * nginx: In case you run multiple websites at once, but you leave them at
 #           `localhost`, then you have to have a different port for each of
 #           them.
-#           
+#
 #           If you have multiple configurations with different ports, then you
 #           will have to expose them under `ports`.
 services:
@@ -27,11 +31,12 @@ services:
     build: ./docker-compose/aws-theme
     volumes:
       - ~/.ssh:/root/.ssh
-      # - ~/.aws:/root/.aws
+      - ~/.aws:/root/.aws
       - .:/project
     environment:
       REPO: "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/wp-theme-..." # add theme name or use below
       BASE_PATH: "wp-content/themes"
+      USE_IONATA_COMPOSER: "true"
       # THEME_DIRNAME: "defaults_to_REPO_NAME"
       # REPO_NAME: wp-theme-...
       # AWS_DEFAULT_REGION: us-east-1

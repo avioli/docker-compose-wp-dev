@@ -1,9 +1,6 @@
-FROM composer:1.6
+FROM composer:1.10
 
-MAINTAINER Evo Stamatov "evo@ionata.com.au"
-
-# COPY config.json "$COMPOSER_HOME/"
-# RUN composer global require ionata/composer-aws -vv
+# MAINTAINER Evo Stamatov "evo@ionata.com.au"
 
 VOLUME ["/project"]
 WORKDIR /project
