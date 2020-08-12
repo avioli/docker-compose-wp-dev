@@ -19,22 +19,22 @@ Steps to use:
 
 ## Example
 
-```
-$ mkdir test
-$ cd test
+```sh
+mkdir test
+cd test
 
-$ git clone https://github.com/avioli/docker-compose-wp-dev.git docker-compose
-$ cp ./docker-compose/docker-compose.yaml .
-$ # edit docker-compose.yaml to your desire
+git clone https://github.com/avioli/docker-compose-wp-dev.git docker-compose
+cp ./docker-compose/docker-compose.yaml .
+# edit docker-compose.yaml to your desire
 
-$ mkdir db
-$ scp ssh://.../db-dump.sql ./db/
+mkdir db
+scp ssh://.../db-dump.sql ./db/
 
-$ # you can skip this if you have setup your theme in the yaml file above
-$ mkdir wp-content
-$ git clone git://.../my-theme wp-content/themes/my-theme
+# you can skip this if you have setup your theme in the yaml file above
+mkdir wp-content
+git clone git://.../my-theme wp-content/themes/my-theme
 
-$ docker-compose up
+docker-compose up
 ```
 
 Wait about 15-20 seconds and load
@@ -60,27 +60,27 @@ timeout, but the db container will import it eventually. When it finishes,
 Press `ctrl-c` to shut down the containers.
 If that fails and they don't shut down, then issue:
 
-```
-$ docker-compose stop
+```sh
+docker-compose stop
 ```
 
 ## Start up
 
-```
-$ docker-compose start
+```sh
+docker-compose start
 ```
 
 This command won't rebuild the containers! If you **do** want to rebuild the containers you should use:
 
-```
-$ docker-compose up
-$ #or docker-compose up <name_of_dir>_<name_of_container>_1
+```sh
+docker-compose up --build
+#or docker-compose up --build <name_of_service>
 ```
 
 ## Destoying the containers
 
-```
-$ docker-compose down
+```sh
+docker-compose down
 ```
 
 This will shut down the containers and remove them.
@@ -91,6 +91,6 @@ This will shut down the containers and remove them.
 
 To cleanup any dangling volumes docker has left, issue this commnad:
 
-```
-$ docker volume ls -qf dangling=true | xargs docker volume rm
+```sh
+docker volume ls -qf dangling=true | xargs docker volume rm
 ```
