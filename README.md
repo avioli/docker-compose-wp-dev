@@ -11,9 +11,9 @@ Steps to use:
 ## Stack
 
   * Theme - your WP theme's repo + composer.json (all optional)
-  * WordPress - v4.8 on php7.0 fpm (`wp-content` as volume)
-  * MariaDB - v10.3 (db files as volume)
-  * Nginx - v1.13 (with custom config)
+  * WordPress - v5.4 on php7.4 fpm (`wp-content` as volume)
+  * MariaDB - v10.5 (db files as volume)
+  * Nginx - v1.19 (with custom config)
 
 **NOTE**: You can remove the `aws-theme` container from your yaml file (and the dependency within the `wordpress` container).
 
