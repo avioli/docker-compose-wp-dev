@@ -45,21 +45,53 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
 
 __define('ABSPATH', WP_CORE_DIR . DIRECTORY_SEPARATOR); // NOTE: ABSPATH is usually already defined (in wp-load.php)
 
-// NOTE: Use WP_HOME_REPLACE_FROM variable to replace a _given string_ with WP_HOME in the rendered output
+$__replacements = array();
+
+// DEPRECATED - use WP_OUTPUT_REPLACE instead
+// NOTE: Use WP_HOME_REPLACE_FROM env to replace a _given string_ with WP_HOME in the rendered output
 // NOTE: We support multiple values with a '|' (pipe char) as delimiter
 if (getenv('WP_HOME_REPLACE_FROM')) {
-	$__replace_from = array_filter(explode('|', getenv('WP_HOME_REPLACE_FROM')), 'trim');
+	$__replace_from = array_map('trim', array_filter(explode('|', getenv('WP_HOME_REPLACE_FROM')), 'trim'));
 	if (! empty($__replace_from)) {
-		__define('WP_HOME_REPLACE_FROM', $__replace_from);
+		$__replacements = array_combine($__replace_from, array_fill(0, count($__replace_from), WP_HOME));
 	}
 	unset($__replace_from);
 }
 
-if (defined('WP_HOME_REPLACE_FROM')
-	&& (is_array(WP_HOME_REPLACE_FROM) && sizeof(WP_HOME_REPLACE_FROM) > 0 || strlen(WP_HOME_REPLACE_FROM) > 0)) {
+// NOTE: Use WP_OUTPUT_REPLACE env to replace any given string in the rendered output
+// NOTE: Format is: from_string => to_string
+// NOTE: We support multiple values with a '|' (pipe char) as delimiter:
+//       from_1 => to_1 | from_2 => to_2 | from_3 => to_3
+// NOTE: Beware - this is string replacement of HTML output - it may replace inline JavaScript and CSS
+if (getenv('WP_OUTPUT_REPLACE')) {
+	$__replace_pairs = array_map('trim', array_filter(explode('|', getenv('WP_OUTPUT_REPLACE')), 'trim'));
+	if (! empty($__replace_pairs)) {
+		$from = $to = $value = '';
+		foreach ($__replace_pairs as $value) {
+			list($from, $to) = array_map('trim', array_filter(explode('=>', $value), 'trim'));
+			if (!empty($from) && !empty($to)) {
+				$__replacements[$from] = $to;
+			}
+		}
+		unset($from, $to, $value);
+	}
+	unset($__replace_pairs);
+}
+
+if (!empty($__replacements)) {
+	__define('WP_OUTPUT_REPLACEMENTS', $__replacements);
+}
+unset($__replacements);
+
+if (defined('WP_OUTPUT_REPLACEMENTS') && is_array(WP_OUTPUT_REPLACEMENTS) && count(WP_OUTPUT_REPLACEMENTS) > 0) {
 	// NOTE: WordPress calls wp_ob_end_flush_all() when shutting down (in wp-includes/functions.php).
 	ob_start(function($buf = '') {
-		return str_replace(WP_HOME_REPLACE_FROM, WP_HOME, $buf);
+		if (is_array(WP_OUTPUT_REPLACEMENTS)) {
+			$from = array_keys(WP_OUTPUT_REPLACEMENTS);
+			$to = array_values(WP_OUTPUT_REPLACEMENTS);
+			return str_replace($from, $to, $buf);
+		}
+		return $buf;
 	});
 }
 

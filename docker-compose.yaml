@@ -74,7 +74,8 @@ services:
       # === wp-dev ===
       # WP_HOME: "http://localhost:8080"
       # WP_SITEURL: ""                                                         # defaults to WP_HOME
-      # WP_HOME_REPLACE_FROM: "http://www.domain.com"                          # replace _this string_ in the rendered output with WP_HOME (no trailing slash)
+      # WP_OUTPUT_REPLACE: "https://www.domain.com => http://localhost:8080 | https://xyz.cloudfront.net/uploads => http://localhost:8080/wp-content/uploads"
+      # ^ String replacement of produced HTML
       # DISABLE_WP_CRON: 1                                                     # defaults to 0 (false)
       # WP_CORE_DIR: "/var/www/html"                                           # path to WordPress
       # === fetch ===
