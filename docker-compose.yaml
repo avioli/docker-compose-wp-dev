@@ -20,6 +20,12 @@ version: '2'
 #  * db: If you want to use different credentials, then make sure to update
 #        the ones in the `wordpress` container as well.
 #
+#        When a container is started for the first time, a new database with
+#        the specified name will be created and initialized with the provided
+#        configuration variables. Furthermore, it will execute files with
+#        extensions .sh, .sql and .sql.gz that are found in `./db`. Files will
+#        be executed in alphabetical order. 
+#
 #  * nginx: In case you run multiple websites at once, but you leave them at
 #           `localhost`, then you have to have a different port for each of
 #           them.
