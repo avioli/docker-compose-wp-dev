@@ -321,6 +321,12 @@ if ( is_wp_error( $upload ) ) {
 	die();
 }
 
+if ( $upload['error'] ) {
+	header("HTTP/1.0 404 Not Found");
+	header("Reason: invalid_download_error");
+	die();
+}
+
 // Make sure we don't end up in an infinite loop.
 if ( basename($upload['file']) === $basename ) {
 	wp_redirect($_SERVER['REQUEST_URI']);
