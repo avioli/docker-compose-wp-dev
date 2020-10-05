@@ -192,10 +192,24 @@ function fetch_remote_file( $url, $upload_date ) {
 	// extract the file name and extension from the url
 	$file_name = basename( $url );
 
+	$fname  = pathinfo( $file_name, PATHINFO_FILENAME );
+	$matches = array();
+	$pattern = '/-(?:\d+x\d+|scaled|rotated)$/';
+	$found_sub_size_match = preg_match( $pattern, $fname, $matches );
+	if ( $found_sub_size_match ) {
+		$file_name = str_replace( $matches[0], '__SUB_SIZE', $file_name);
+	}
+
 	// get placeholder file in the upload dir with a unique, sanitized filename
-	$upload = wp_upload_bits( $file_name, 0, '', $upload_date );
+	$upload = wp_upload_bits( $file_name, null, '', $upload_date );
 	if ( $upload['error'] )
 		return new WP_Error( 'upload_dir_error', $upload['error'] );
+
+	if ( $found_sub_size_match ) {
+		@unlink( $upload['file'] );
+		$upload['file'] = str_replace( '__SUB_SIZE', $matches[0], $upload['file'] );
+		$upload['url'] = str_replace( '__SUB_SIZE', $matches[0], $upload['url'] );
+	}
 
 	// fetch the remote url and write it to the placeholder file
 	if( ! class_exists( 'WP_Http' ) ) {
