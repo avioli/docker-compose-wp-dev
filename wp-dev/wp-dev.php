@@ -95,4 +95,32 @@ if (defined('WP_OUTPUT_REPLACEMENTS') && is_array(WP_OUTPUT_REPLACEMENTS) && cou
 	});
 }
 
+
+function add_smtp_host_support() {
+    if (empty(getenv('SMTP_HOST'))) {
+        return;
+    }
+
+    add_action('phpmailer_init', function ($phpmailer) {
+        $phpmailer->IsSMTP();
+        $phpmailer->Host = getenv('SMTP_HOST');
+        if (!empty(getenv('SMTP_PORT'))) {
+            $smtp_port = intval(getenv('SMTP_PORT'), 10);
+            if ($smtp_port > 0) {
+                $phpmailer->Port = $smtp_port;
+            }
+        }
+        $phpmailer->SMTPAuth = false;
+        $phpmailer->SMTPSecure = '';
+        $phpmailer->SMTPAutoTLS = false;
+    });
+
+    add_filter('wp_mail_from', function ($from_email) {
+        if ($from_email !== 'wordpress@_') {
+            return $from_email;
+        }
+        return get_option('admin_email');
+    }, 20);
+}
+
 // END.

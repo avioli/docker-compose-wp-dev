@@ -51,6 +51,7 @@ services:
     depends_on:
       - aws-theme
       - db
+      - maildev
     image: wordpress:5.4-php7.4-fpm-alpine
     # build: ./docker-compose/custom-wp
     volumes:
@@ -82,6 +83,12 @@ services:
       # FETCH_FOR_ADMINS_ONLY: 0
       # FETCH_LIMIT_RESPONSE_SIZE: 20971520                                    # 20 mega bytes
       # FETCH_LIMIT_RESPONSE_TIME: 60                                          # 60 seconds
+      SMTP_HOST: maildev
+
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - "1080:80"
 
   db:
     image: mariadb:10.5

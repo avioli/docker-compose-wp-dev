@@ -12,6 +12,7 @@ if [ -e "$WP_CORE_DIR/wp-config.php" ]; then
   fi
 
   echo "<?php @include_once('wp-dev/wp-dev.php'); ?>" | cat - "$WP_CORE_DIR/wp-config.bak" > "$WP_CORE_DIR/wp-config.php"
+  echo "if (function_exists('add_smtp_host_support')) add_smtp_host_support();" >> "$WP_CORE_DIR/wp-config.php"
   echo "Injected wp-dev into wp-config.php"
 else
   echo "NO wp-config.php FOUND!"
