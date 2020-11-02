@@ -90,6 +90,13 @@ services:
     ports:
       - "1080:80"
 
+  adminer:
+    depends_on:
+      - db
+    image: adminer
+    ports:
+      - "2080:8080"
+
   db:
     image: mariadb:10.5
     volumes:
