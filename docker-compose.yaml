@@ -61,8 +61,6 @@ services:
       - ./docker-compose/wp-dev/apache2-hack--wp-dev-inject.sh:/usr/local/bin/apache2-hack--wp-dev-inject.sh
       - ./vendor:/var/www/html/vendor
     command: ["apache2-hack--wp-dev-inject.sh"]
-    links:
-      - db
     # restart: always
     environment:
       MYSQL_PORT_3306_TCP: "tcp://db:3306"
@@ -106,8 +104,6 @@ services:
       - wordpress
     volumes:
       - ./docker-compose/nginx/conf.d:/etc/nginx/conf.d
-    links:
-      - wordpress
     ports:
       - "8080:80"
     # restart: always
