@@ -283,7 +283,7 @@ function fetch_allowed_http_request_hosts( $is_external, $host ) {
 $time = null;
 $y = (int)substr( $request, 0, 4 );
 $m = (int)substr( $request, 5, 2 );
-if ($y >= 1970 && $y <= 2020 && $m >= 1 && $m <= 12) {
+if ($y >= 1970 && $y <= (int)date('Y') && $m >= 1 && $m <= 12) {
 	$time = substr( $request, 0, 7 );
 }
 
