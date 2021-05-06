@@ -2,15 +2,15 @@ version: '2'
 
 # CONFIGURATION NOTES:
 # 
-#  * aws-theme: If you have your theme in a repo, then you can use the
-#               `aws-theme` container to clone it automatically via the REPO or
-#               REPO_NAME variables.
+#  * wp-theme: If you have your theme in a repo, then you can use the
+#              `gh-theme` container to clone it automatically via the REPO or
+#              REPO_NAME variables.
 #
-#               If you don't want to use Ionata's composer (probably) - comment
-#               out the USE_IONATA_COMPOSER line and maybe the `~/.aws` volume
-#               share.
+#              If you don't want to use Ionata's composer (probably) - comment
+#              out the USE_IONATA_COMPOSER line and maybe the `~/.aws` volume
+#              share.
 #
-#  * wordpress: Comment or remove the `aws-theme` dependency, plus the ./vendor
+#  * wordpress: Comment or remove the `wp-theme` dependency, plus the ./vendor
 #               volume, if you are not going to use the above container.
 #
 #               If you edit your `/etc/hosts` file and want to run multiple
@@ -33,23 +33,25 @@ version: '2'
 #           If you have multiple configurations with different ports, then you
 #           will have to expose them under `ports`.
 services:
-  aws-theme:
-    build: ./docker-compose/aws-theme
+  wp-theme:
+    # build: ./docker-compose/aws-theme
+    build: ./docker-compose/gh-theme
     volumes:
       - ~/.ssh:/root/.ssh
-      - ~/.aws:/root/.aws
+      # - ~/.aws:/root/.aws
       - .:/project
     environment:
-      REPO: "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/wp-theme-..." # add theme name or use below
+      # REPO: "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/wp-theme-..." # add theme name or use below
+      REPO: "https://github.com/ionata/wp-theme-..." # add theme name or use below
       BASE_PATH: "wp-content/themes"
-      USE_IONATA_COMPOSER: "true"
+      # USE_IONATA_COMPOSER: "true"
       # THEME_DIRNAME: "defaults_to_REPO_NAME"
       # REPO_NAME: wp-theme-...
       # AWS_DEFAULT_REGION: us-east-1
 
   wordpress:
     depends_on:
-      - aws-theme
+      - wp-theme
       - db
       - maildev
     image: wordpress:5.4-php7.4-fpm-alpine
