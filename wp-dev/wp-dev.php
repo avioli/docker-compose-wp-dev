@@ -21,6 +21,8 @@ function __define($name, $value) {
 	}
 }
 
+// __define('WP_DEBUG', true);
+
 __define('ENVIRONMENT', getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'development');
 
 __define('WP_CORE_DIR', getenv('WP_CORE_DIR') ? rtrim(getenv('WP_CORE_DIR'), '/\\') : dirname(__DIR__));
