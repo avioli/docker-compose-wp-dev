@@ -1,4 +1,4 @@
-FROM composer:2.0
+FROM composer:1
 
 # MAINTAINER Evo Stamatov "evo@ionata.com.au"
 
